@@ -2,17 +2,13 @@ import os
 import argparse
 import xml.etree.ElementTree as ET
 
-def convert_voc_annotation(data_path, data_type, anno_path, use_difficult_bbox=True):
+def convert_voc_annotation(data_path, anno_path, use_difficult_bbox=True):
 
-    # classes = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
-    #            'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
-    #            'motorbike', 'person', 'pottedplant', 'sheep', 'sofa',
-    #            'train', 'tvmonitor']
     classes = ['rebar']
-    img_inds_file = os.path.join(data_path, 'ImageSets', 'Main', data_type + '.txt')
-    with open(img_inds_file, 'r') as f:
-        txt = f.readlines()
-        image_inds = [line.strip() for line in txt]
+    image_inds = []
+    img_inds_file = os.path.join(data_path, 'Annotations')
+    for file_name in os.listdir(img_inds_file):
+        image_inds.append(os.path.splitext(file_name)[0])
 
     with open(anno_path, 'a') as f:
         for image_ind in image_inds:
@@ -47,10 +43,8 @@ if __name__ == '__main__':
     if os.path.exists(flags.train_annotation):os.remove(flags.train_annotation)
     if os.path.exists(flags.test_annotation):os.remove(flags.test_annotation)
 
-    num1 = convert_voc_annotation(os.path.join(flags.data_path, 'train_data_VOC'), 'trainval', flags.train_annotation, False)
-    #num2 = convert_voc_annotation(os.path.join(flags.data_path, 'train/VOCdevkit/VOC2012'), 'trainval', flags.train_annotation, False)
-    num3 = convert_voc_annotation(os.path.join(flags.data_path, 'test_VOC'),  'test', flags.test_annotation, False)
-    #print('=> The number of image for train is: %d\tThe number of image for test is:%d' %(num1 + num2, num3))
+    num1 = convert_voc_annotation(os.path.join(flags.data_path, 'train_data_VOC'), flags.train_annotation, False)
+    num3 = convert_voc_annotation(os.path.join(flags.data_path, 'test_VOC'),  flags.test_annotation, False)
     print('=> The number of image for train is: %d\tThe number of image for test is:%d' % (num1, num3))
 
 
