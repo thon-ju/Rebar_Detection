@@ -39,7 +39,7 @@ with tf.Session() as sess:
                     (var_name_mess[1] == 'yolo-v3' and (var_name_mess[-2] in preserve_org_names)): continue
         org_weights_mess.append([var_name, var_shape])
         print("=> " + str(var_name).ljust(50), var_shape)
-print()
+print("====================================")
 tf.reset_default_graph()
 
 cur_weights_mess = []
@@ -60,6 +60,9 @@ for var in tf.global_variables():
 
 org_weights_num = len(org_weights_mess)
 cur_weights_num = len(cur_weights_mess)
+print("====================================")
+print(org_weights_num)
+print(cur_weights_num)
 if cur_weights_num != org_weights_num:
     raise RuntimeError
 

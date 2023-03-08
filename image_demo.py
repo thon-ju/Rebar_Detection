@@ -19,7 +19,8 @@ from PIL import Image
 
 return_elements = ["input/input_data:0", "pred_sbbox/concat_2:0", "pred_mbbox/concat_2:0", "pred_lbbox/concat_2:0"]
 pb_file         = "./yolov3_96_coco.pb"
-image_path      = "./0C006B5C.jpg"
+image_path      = "img/test2.jpg"
+min_score       = 0.7
 num_classes     = 1
 input_size      = 544
 graph           = tf.Graph()
@@ -41,16 +42,30 @@ with tf.Session(graph=graph) as sess:
 pred_bbox = np.concatenate([np.reshape(pred_sbbox, (-1, 5 + num_classes)),
                             np.reshape(pred_mbbox, (-1, 5 + num_classes)),
                             np.reshape(pred_lbbox, (-1, 5 + num_classes))], axis=0)
-print(pred_bbox)
-bboxes = utils.nms(pred_bbox, 0.45, method='soft-nms')
+
+#bboxes = utils.nms(pred_bbox, 0.45, method='soft-nms')
 bboxes = utils.postprocess_boxes(pred_bbox, original_image_size, input_size, 0.6)
-#bboxes = utils.nms(bboxes, 0.45, method='nms')
-image = utils.draw_bbox(original_image, bboxes)
+bboxes = utils.nms(bboxes, 0.45, method='nms')
+image = utils.draw_bbox(original_image, bboxes, min_score)
 #image = Image.fromarray(image).resize((2666,2000),Image.ANTIALIAS)
 #image = cv2.resize(image,(2666,2000))
+
+totalNum = 0
+sureNum = 0
+unsureNum = 0
+for i, bbox in enumerate(bboxes):
+    score = bbox[4]
+    totalNum+=1
+    if score>min_score:
+        sureNum+=1
+    else:
+        unsureNum+=1
+
+print('钢筋数量：合计%d \t高准确度%d \t低准确度%d' % (totalNum, sureNum, unsureNum))
+
 image = Image.fromarray(image)
 image.show()
-image.save('a.jpg')
+image.save('test_mark.jpg')
 
 
 

@@ -30,17 +30,15 @@ __C.YOLO.STRIDES                = [8, 16, 32]
 __C.YOLO.ANCHOR_PER_SCALE       = 3
 __C.YOLO.IOU_LOSS_THRESH        = 0.5#0.5
 __C.YOLO.UPSAMPLE_METHOD        = "resize"
-__C.YOLO.ORIGINAL_WEIGHT        = "./checkpoint/yolov3_coco.ckpt"
-__C.YOLO.DEMO_WEIGHT            = "./checkpoint/yolov3_coco_demo.ckpt"
+__C.YOLO.ORIGINAL_WEIGHT        = "./checkpoint/yolov3_test_loss=92.5576.ckpt-92"
+__C.YOLO.DEMO_WEIGHT            = "./checkpoint/yolov3_test_loss=92.5576.ckpt-92"
 
 # Train options
 __C.TRAIN                       = edict()
 
 __C.TRAIN.ANNOT_PATH            = "./data/dataset/voc_train.txt"
 __C.TRAIN.BATCH_SIZE            = 3
-#__C.TRAIN.INPUT_SIZE            = [320, 352, 384, 416, 448, 480, 512, 544, 576, 608]
 __C.TRAIN.INPUT_SIZE            = [320,352, 384,416, 544, 576,608,832, 928]
-#__C.TRAIN.INPUT_SIZE            = [416,832]
 __C.TRAIN.DATA_AUG              = True
 __C.TRAIN.LEARN_RATE_INIT       = 1e-3#1e-4
 __C.TRAIN.LEARN_RATE_END        = 1e-6
